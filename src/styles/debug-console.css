@@ -1,0 +1,69 @@
+.debug-console {
+  position: absolute;
+  inset: 0;
+  z-index: 50;
+  display: none;
+  flex-direction: column;
+  background: rgba(0, 0, 0, 0.85);
+  font-family: var(--font-mono, 'SF Mono', 'Menlo', 'Consolas', monospace);
+  font-size: 11px;
+  line-height: 1.5;
+  color: #e0e0e0;
+  pointer-events: none;
+}
+
+.debug-console.open {
+  display: flex;
+  pointer-events: auto;
+}
+
+.debug-console-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 4px 8px;
+  background: rgba(255, 255, 255, 0.08);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  font-weight: 600;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #aaa;
+}
+
+.debug-console-hint {
+  font-weight: 400;
+  color: #666;
+}
+
+.debug-console-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 4px 8px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.15) transparent;
+}
+
+.debug-console-body::-webkit-scrollbar {
+  width: 4px;
+}
+
+.debug-console-body::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 2px;
+}
+
+.debug-console-line {
+  white-space: pre-wrap;
+  word-break: break-all;
+  padding: 1px 0;
+}
+
+.debug-console-time {
+  color: #555;
+  margin-right: 6px;
+}
+
+.debug-console-msg {
+  color: inherit;
+}

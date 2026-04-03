@@ -1,0 +1,555 @@
+/* ============================================================
+   Shell Layout
+   ============================================================ */
+
+.shell {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: var(--bg-primary);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Animated background gradient */
+.shell::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(ellipse at 30% 20%, rgba(124, 58, 237, 0.08) 0%, transparent 50%),
+              radial-gradient(ellipse at 70% 80%, rgba(99, 102, 241, 0.05) 0%, transparent 50%);
+  animation: bgShift 20s ease-in-out infinite alternate;
+  pointer-events: none;
+  z-index: 0;
+}
+
+@keyframes bgShift {
+  0% { transform: translate(0, 0); }
+  100% { transform: translate(-5%, 3%); }
+}
+
+/* ============================================================
+   Toolbar
+   ============================================================ */
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  background: var(--bg-surface);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border-subtle);
+  z-index: 10;
+  position: relative;
+}
+
+.toolbar-brand {
+  font-weight: 700;
+  font-size: 16px;
+  letter-spacing: -0.02em;
+  color: var(--accent-light);
+  margin-right: 12px;
+  user-select: none;
+  white-space: nowrap;
+}
+
+.toolbar-brand span {
+  color: var(--text-secondary);
+  font-weight: 400;
+  font-size: 12px;
+  margin-left: 6px;
+}
+
+.toolbar-divider {
+  width: 1px;
+  height: 20px;
+  background: var(--border-subtle);
+  margin: 0 4px;
+}
+
+.toolbar-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border: none;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  font-size: 16px;
+}
+
+.toolbar-btn:hover {
+  background: var(--bg-surface-hover);
+  color: var(--text-primary);
+}
+
+.toolbar-btn:active {
+  background: var(--bg-surface-active);
+  transform: scale(0.95);
+}
+
+.toolbar-btn.active {
+  color: var(--accent-light);
+  background: var(--accent-glow);
+}
+
+.toolbar-btn:disabled {
+  opacity: 0.3;
+  pointer-events: none;
+}
+
+.toolbar-spacer {
+  flex: 1;
+}
+
+/* Volume slider */
+.volume-group {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.volume-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 80px;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--border-subtle);
+  outline: none;
+  cursor: pointer;
+}
+
+.volume-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--accent);
+  cursor: pointer;
+  transition: transform var(--transition-fast);
+}
+
+.volume-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+}
+
+/* FPS counter */
+.fps-counter {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-muted);
+  min-width: 48px;
+  text-align: right;
+  user-select: none;
+}
+
+/* Game title */
+.game-title {
+  font-size: 12px;
+  color: var(--text-secondary);
+  max-width: 160px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ============================================================
+   Screen Area
+   ============================================================ */
+
+.screen-area {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 1;
+}
+
+.screen-container {
+  position: relative;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-lg), 0 0 60px rgba(124, 58, 237, 0.1);
+  transition: box-shadow var(--transition-slow);
+}
+
+.screen-container.playing {
+  box-shadow: var(--shadow-lg), 0 0 80px rgba(124, 58, 237, 0.15);
+}
+
+.gba-screen {
+  display: block;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+  background: #1a1a2e;
+}
+
+/* ============================================================
+   ROM Picker (initial state)
+   ============================================================ */
+
+.rom-picker {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  padding: 48px;
+  border: 2px dashed var(--border-subtle);
+  border-radius: var(--radius-xl);
+  cursor: pointer;
+  transition: all var(--transition-normal);
+  user-select: none;
+  min-width: 420px;
+}
+
+.rom-picker:hover,
+.rom-picker.drag-over {
+  border-color: var(--accent);
+  background: var(--accent-glow);
+  box-shadow: var(--shadow-glow);
+}
+
+.rom-picker.drag-over {
+  transform: scale(1.02);
+}
+
+.rom-picker-icon {
+  width: 80px;
+  height: 56px;
+  border-radius: var(--radius-md);
+  border: 2px solid var(--text-muted);
+  position: relative;
+  opacity: 0.5;
+  transition: all var(--transition-normal);
+}
+
+.rom-picker:hover .rom-picker-icon {
+  opacity: 0.8;
+  border-color: var(--accent-light);
+}
+
+/* GBA silhouette inside the icon */
+.rom-picker-icon::before {
+  content: '';
+  position: absolute;
+  top: 6px;
+  left: 10px;
+  width: 56px;
+  height: 36px;
+  border-radius: 4px;
+  background: var(--text-muted);
+  opacity: 0.3;
+}
+
+.rom-picker:hover .rom-picker-icon::before {
+  background: var(--accent-light);
+  opacity: 0.3;
+}
+
+.rom-picker-text {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  transition: color var(--transition-normal);
+}
+
+.rom-picker:hover .rom-picker-text {
+  color: var(--text-primary);
+}
+
+.rom-picker-hint {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+/* Pulse animation for the icon */
+@keyframes pulse {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 0.7; }
+}
+
+.rom-picker-icon {
+  animation: pulse 3s ease-in-out infinite;
+}
+
+.rom-picker:hover .rom-picker-icon {
+  animation: none;
+}
+
+/* ============================================================
+   Settings Panel
+   ============================================================ */
+
+.settings-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 99;
+  opacity: 0;
+  visibility: hidden;
+  transition: all var(--transition-normal);
+}
+
+.settings-overlay.open {
+  opacity: 1;
+  visibility: visible;
+}
+
+.settings-panel {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 360px;
+  background: var(--bg-secondary);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-left: 1px solid var(--border-subtle);
+  z-index: 100;
+  transform: translateX(100%);
+  transition: transform var(--transition-slow);
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+}
+
+.settings-panel.open {
+  transform: translateX(0);
+}
+
+.settings-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.settings-header h2 {
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.settings-tabs {
+  display: flex;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.settings-tab {
+  flex: 1;
+  padding: 10px;
+  text-align: center;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  cursor: pointer;
+  border: none;
+  background: none;
+  border-bottom: 2px solid transparent;
+  transition: all var(--transition-fast);
+}
+
+.settings-tab:hover {
+  color: var(--text-primary);
+}
+
+.settings-tab.active {
+  color: var(--accent-light);
+  border-bottom-color: var(--accent);
+}
+
+.settings-body {
+  padding: 20px;
+  flex: 1;
+}
+
+.settings-section {
+  margin-bottom: 24px;
+}
+
+.settings-section h3 {
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+  margin-bottom: 12px;
+}
+
+/* Control binding row */
+.control-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  border-radius: var(--radius-sm);
+  transition: background var(--transition-fast);
+}
+
+.control-row:hover {
+  background: var(--bg-surface-hover);
+}
+
+.control-label {
+  font-size: 13px;
+  color: var(--text-primary);
+}
+
+.control-key {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  padding: 3px 10px;
+  border-radius: var(--radius-xs);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  min-width: 60px;
+  text-align: center;
+}
+
+.control-key:hover {
+  border-color: var(--accent);
+  color: var(--accent-light);
+}
+
+.control-key.listening {
+  border-color: var(--accent);
+  background: var(--accent-glow);
+  color: var(--accent-light);
+  animation: pulse 1s ease-in-out infinite;
+}
+
+/* Scale buttons */
+.scale-group {
+  display: flex;
+  gap: 6px;
+}
+
+.scale-btn {
+  padding: 6px 14px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-subtle);
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: 13px;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.scale-btn:hover {
+  border-color: var(--accent);
+  color: var(--text-primary);
+}
+
+.scale-btn.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: white;
+}
+
+/* ============================================================
+   Toast Notifications
+   ============================================================ */
+
+.toast-container {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 200;
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 8px;
+}
+
+.toast {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 16px;
+  background: var(--bg-surface);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+  font-size: 13px;
+  color: var(--text-primary);
+  animation: toastIn 300ms cubic-bezier(0.4, 0, 0.2, 1);
+  max-width: 320px;
+}
+
+.toast.success { border-left: 3px solid var(--success); }
+.toast.warning { border-left: 3px solid var(--warning); }
+.toast.error { border-left: 3px solid var(--error); }
+.toast.info { border-left: 3px solid var(--accent); }
+
+.toast-exit {
+  animation: toastOut 200ms ease forwards;
+}
+
+@keyframes toastIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes toastOut {
+  to {
+    opacity: 0;
+    transform: translateY(-8px) scale(0.96);
+  }
+}
+
+/* ============================================================
+   Fullscreen
+   ============================================================ */
+
+/* .shell is the fullscreen element — use :fullscreen directly */
+.shell:fullscreen {
+  background: #000;
+}
+
+.shell:fullscreen .toolbar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  opacity: 0;
+  transition: opacity var(--transition-normal);
+  z-index: 10;
+}
+
+.shell:fullscreen .toolbar:hover {
+  opacity: 1;
+}
+
+.shell:fullscreen .screen-container {
+  border-radius: 0;
+  box-shadow: none !important;
+}
+
+/* Canvas needs explicit sizing — object-fit doesn't work on <canvas>.
+   Use min() to pick the dimension that preserves the 3:2 aspect ratio. */
+.shell:fullscreen .gba-screen {
+  width: min(100vw, calc(100vh * 240 / 160)) !important;
+  height: min(100vh, calc(100vw * 160 / 240)) !important;
+}

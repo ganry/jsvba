@@ -24,6 +24,7 @@ Thumbs.db
 
 # Product website
 site/
+site/dist/
 
 # Logs
 *.log
